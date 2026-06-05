@@ -3,18 +3,19 @@
   "version": "0.1.0",
   "description": "Local proof bundles for patches, command receipts, and reviewer handoffs.",
   "type": "module",
-  "main": "./dist/index.js",
+  "main": "./dist/src/index.js",
   "bin": {
-    "patchproof": "./dist/cli.js"
+    "patchproof": "./dist/src/cli.js"
   },
   "exports": {
-    ".": "./dist/index.js"
+    ".": "./dist/src/index.js"
   },
   "files": [
     "dist",
     "docs",
     "scripts/smoke.sh",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
@@ -32,7 +33,7 @@
     "review",
     "testing"
   ],
-  "author": "Roger",
+  "author": "Roger Chappel",
   "license": "MIT",
   "engines": {
     "node": ">=20"
@@ -40,5 +41,13 @@
   "devDependencies": {
     "@types/node": "^25.9.1",
     "typescript": "^6.0.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rogerchappel/patchproof.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rogerchappel/patchproof/issues"
+  },
+  "homepage": "https://github.com/rogerchappel/patchproof#readme"
 }
