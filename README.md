@@ -70,3 +70,14 @@ including secrets, private diffs, or unreleased customer data in proof bundles.
 ## License
 
 MIT
+
+## Development
+
+Run the same local checks that protect the package before opening a release or pull request:
+
+- `npm run build`
+- `npm test`
+- `npm run check`
+- `npm run smoke`
+- `npm run package:smoke`
+- `npm run release:check`
