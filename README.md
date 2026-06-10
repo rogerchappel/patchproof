@@ -25,7 +25,9 @@ npx patchproof --version
 ```
 
 The current v0.1.0 command surface is intentionally small while the proof
-bundle format is being finalized:
+bundle format is being finalized. These commands are wired as explicit
+placeholders so scripts can detect the supported surface without assuming the
+future bundle behavior is complete:
 
 ```sh
 patchproof init

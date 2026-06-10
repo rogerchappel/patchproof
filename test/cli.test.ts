@@ -30,3 +30,24 @@ test('rejects unknown commands with a non-zero exit', async () => {
     },
   );
 });
+
+test('documented placeholder commands exit successfully', async () => {
+  const init = await execFileAsync(process.execPath, ['dist/src/cli.js', 'init']);
+  const run = await execFileAsync(process.execPath, ['dist/src/cli.js', 'run', '--run']);
+  const render = await execFileAsync(process.execPath, ['dist/src/cli.js', 'render']);
+
+  assert.match(init.stdout, /proof bundle scaffolding is not implemented yet/);
+  assert.match(run.stdout, /command receipt capture is not implemented yet/);
+  assert.match(render.stdout, /proof bundle rendering is not implemented yet/);
+});
+
+test('run command requires explicit experimental acknowledgement', async () => {
+  await assert.rejects(
+    execFileAsync(process.execPath, ['dist/src/cli.js', 'run']),
+    (error: unknown) => {
+      assert.equal((error as { code?: number }).code, 2);
+      assert.match((error as { stderr?: string }).stderr ?? '', /requires --run/);
+      return true;
+    },
+  );
+});
