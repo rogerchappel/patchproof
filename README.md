@@ -35,6 +35,11 @@ patchproof run --run
 patchproof render
 ```
 
+See [examples/cli-surface-smoke.md](examples/cli-surface-smoke.md) for a
+copyable demo of the current package surface and
+[docs/tutorials/package-surface-check.md](docs/tutorials/package-surface-check.md)
+for the release-check recipe.
+
 ## Verify
 
 Run the release-candidate checks before opening a PR or publishing a package:
