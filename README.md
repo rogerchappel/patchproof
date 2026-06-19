@@ -1,12 +1,10 @@
 # patchproof
 
-patchproof is an early local-first CLI for collecting patch proof bundles:
-command receipts, reviewer notes, and rendered evidence for handoffs.
+Local proof bundles for patches, command receipts, and reviewer handoffs.
 
 ## Status
 
-This repository is early-stage. Confirm the current support, release, and
-security posture before using it in production.
+This is an early v0.1.0 CLI surface for initializing, running, and rendering patch proof bundles.
 
 ## Install
 
@@ -17,72 +15,39 @@ npm run build
 
 ## Use
 
-Inspect the packaged CLI surface locally:
+Create the local proof structure, run the configured proof command, then render the result:
 
 ```sh
-npx patchproof --help
-npx patchproof --version
+node dist/cli.js init
+node dist/cli.js run --run
+node dist/cli.js render
 ```
 
-The current v0.1.0 command surface is intentionally small while the proof
-bundle format is being finalized. These commands are wired as explicit
-placeholders so scripts can detect the supported surface without assuming the
-future bundle behavior is complete:
+Check the installed CLI version:
 
 ```sh
-patchproof init
-patchproof run --run
-patchproof render
+node dist/cli.js --version
 ```
-
-See [examples/cli-surface-smoke.md](examples/cli-surface-smoke.md) for a
-copyable demo of the current package surface and
-[docs/tutorials/package-surface-check.md](docs/tutorials/package-surface-check.md)
-for the release-check recipe.
 
 ## Verify
 
-Run the release-candidate checks before opening a PR or publishing a package:
-
 ```sh
-npm test
-npm run check
-npm run build
-npm run smoke
-npm run package:smoke
 npm run release:check
 ```
 
-`npm run release:check` runs the same build, test, CLI smoke, and pack dry-run
-path used for release readiness.
+## Limitations
 
-You can also run the repository validation helper:
-
-```sh
-bash scripts/validate.sh
-```
+- Proof bundles are local artifacts and should be reviewed before sharing.
+- The current CLI is intentionally small; expand examples as new commands land.
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution expectations. Changes
-should be small, reviewable, and verified before review.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution expectations. Changes should be small, reviewable, and verified before review.
 
 ## Security
 
-See [SECURITY.md](SECURITY.md) for vulnerability reporting guidance. Avoid
-including secrets, private diffs, or unreleased customer data in proof bundles.
+See [SECURITY.md](SECURITY.md) for vulnerability reporting guidance.
 
 ## License
 
 MIT
-
-## Development
-
-Run the same local checks that protect the package before opening a release or pull request:
-
-- `npm run build`
-- `npm test`
-- `npm run check`
-- `npm run smoke`
-- `npm run package:smoke`
-- `npm run release:check`
