@@ -18,16 +18,19 @@ npm run build
 Create the local proof structure, run the configured proof command, then render the result:
 
 ```sh
-node dist/cli.js init
-node dist/cli.js run --run
-node dist/cli.js render
+node dist/src/cli.js init
+node dist/src/cli.js run --run
+node dist/src/cli.js render
 ```
 
 Check the installed CLI version:
 
 ```sh
-node dist/cli.js --version
+node dist/src/cli.js --version
 ```
+
+`patchproof run` requires `--run` while command receipt capture is experimental.
+This makes the placeholder command explicit in scripts and release smokes.
 
 ## Verify
 
