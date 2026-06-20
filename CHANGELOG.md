@@ -10,6 +10,11 @@ format and uses semantic versioning when versioned releases are published.
 ### Added
 
 - Initial project setup.
+- Package smoke now verifies the CLI surface example is included in the npm tarball.
+
+### Fixed
+
+- README checkout commands now point at the actual built CLI path.
 
 ## Release Links
 
