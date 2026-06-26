@@ -32,6 +32,19 @@ node dist/src/cli.js --version
 `patchproof run` requires `--run` while command receipt capture is experimental.
 This makes the placeholder command explicit in scripts and release smokes.
 
+## Runnable Demo
+
+Capture the current CLI surface as local command receipts:
+
+```sh
+bash demo/cli-surface-smoke.sh
+```
+
+The script writes version, help, placeholder command output, and the guarded
+`run` failure output to `${TMPDIR:-/tmp}/patchproof-cli-surface`. See
+[docs/tutorials/cli-surface-demo.md](docs/tutorials/cli-surface-demo.md) for the
+walkthrough.
+
 ## Verify
 
 ```sh
