@@ -12,6 +12,7 @@
   },
   "files": [
     "dist",
+    "!dist/test",
     "docs",
     "examples",
     "scripts/smoke.sh",
@@ -29,7 +30,7 @@
     "test": "node --test dist/test/*.test.js",
     "smoke": "bash scripts/smoke.sh",
     "prepack": "npm run build",
-    "package:smoke": "npm run build && test -f dist/src/cli.js && test -f dist/src/index.js && test -f examples/cli-surface-smoke.md && npm pack --dry-run",
+    "package:smoke": "npm run build && node scripts/package-smoke.mjs",
     "release:check": "npm test && npm run check && npm run build && npm run smoke && npm run package:smoke"
   },
   "keywords": [
