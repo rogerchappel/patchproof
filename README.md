@@ -58,6 +58,16 @@ npm run release:check
 `release:check` is the CI and release-dry-run gate. It rebuilds the TypeScript
 output, runs the CLI smoke, and checks that the package tarball contains the
 CLI, library entrypoint, and example proof artifact.
+## CLI Help Smoke
+
+Confirm the packaged command starts and prints its help text before relying on a release tarball or downstream automation:
+
+```bash
+npm run build
+node ./dist/src/cli.js --help
+```
+
+The command should exit successfully, print the available options, and avoid reading project files or contacting external services.
 
 ## Limitations
 
