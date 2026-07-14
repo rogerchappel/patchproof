@@ -6,9 +6,11 @@ Local proof bundles for patches, command receipts, and reviewer handoffs.
 
 This is an early v0.1.0 CLI surface for initializing, running, and rendering patch proof bundles.
 
-## Install
+## Install from a checkout
 
 ```sh
+git clone https://github.com/rogerchappel/patchproof.git
+cd patchproof
 npm install
 npm run build
 ```
@@ -18,15 +20,15 @@ npm run build
 Create the local proof structure, run the configured proof command, then render the result:
 
 ```sh
-node dist/src/cli.js init
-node dist/src/cli.js run --run
-node dist/src/cli.js render
+node dist/cli.js init
+node dist/cli.js run --run
+node dist/cli.js render
 ```
 
 Check the installed CLI version:
 
 ```sh
-node dist/src/cli.js --version
+node dist/cli.js --version
 ```
 
 `patchproof run` requires `--run` while command receipt capture is experimental.
@@ -44,6 +46,15 @@ The script writes version, help, placeholder command output, and the guarded
 `run` failure output to `${TMPDIR:-/tmp}/patchproof-cli-surface`. See
 [docs/tutorials/cli-surface-demo.md](docs/tutorials/cli-surface-demo.md) for the
 walkthrough.
+
+Additional demo and launch assets from this sweep:
+
+- [Capture the current CLI surface](docs/tutorials/current-cli-surface.md)
+  shows help and version output for the checked-in CLI.
+- `bash demo/current-cli-demo.sh` builds the CLI and writes help/version
+  captures under `/tmp/patchproof-demo`.
+- [Launch note draft](docs/promo/launch-note-draft.md) provides grounded
+  promotion copy with explicit limitations.
 
 ## Verify
 
@@ -64,7 +75,7 @@ Confirm the packaged command starts and prints its help text before relying on a
 
 ```bash
 npm run build
-node ./dist/src/cli.js --help
+node ./dist/cli.js --help
 ```
 
 The command should exit successfully, print the available options, and avoid reading project files or contacting external services.

@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "description": "Local proof bundles for patches, command receipts, and reviewer handoffs.",
   "type": "module",
-  "main": "./dist/src/index.js",
+  "main": "./dist/index.js",
   "bin": {
-    "patchproof": "./dist/src/cli.js"
+    "patchproof": "./dist/cli.js"
   },
   "exports": {
-    ".": "./dist/src/index.js"
+    ".": "./dist/index.js"
   },
   "files": [
     "dist",

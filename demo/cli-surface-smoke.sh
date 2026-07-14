@@ -10,14 +10,14 @@ mkdir -p "$out_dir"
 
 npm run build >/dev/null
 
-node dist/src/cli.js --version >"$out_dir/version.txt"
-node dist/src/cli.js --help >"$out_dir/help.txt"
-node dist/src/cli.js init >"$out_dir/init.txt"
-node dist/src/cli.js run --run >"$out_dir/run.txt"
-node dist/src/cli.js render >"$out_dir/render.txt"
+node dist/cli.js --version >"$out_dir/version.txt"
+node dist/cli.js --help >"$out_dir/help.txt"
+node dist/cli.js init >"$out_dir/init.txt"
+node dist/cli.js run --run >"$out_dir/run.txt"
+node dist/cli.js render >"$out_dir/render.txt"
 
 set +e
-node dist/src/cli.js run >"$out_dir/run-without-flag.out" 2>"$out_dir/run-without-flag.err"
+node dist/cli.js run >"$out_dir/run-without-flag.out" 2>"$out_dir/run-without-flag.err"
 run_status=$?
 set -e
 

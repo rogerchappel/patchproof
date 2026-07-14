@@ -14,8 +14,8 @@ const packedFiles = new Set(packument.files.map((file) => file.path));
 const requiredFiles = [
   "README.md",
   "LICENSE",
-  "dist/src/cli.js",
-  "dist/src/index.js",
+  "dist/cli.js",
+  "dist/index.js",
   "examples/cli-surface-smoke.md",
 ];
 const forbiddenPrefixes = ["dist/test/"];
