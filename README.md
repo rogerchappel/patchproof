@@ -55,6 +55,8 @@ Additional demo and launch assets from this sweep:
   captures under `/tmp/patchproof-demo`.
 - [Launch note draft](docs/promo/launch-note-draft.md) provides grounded
   promotion copy with explicit limitations.
+- [Current CLI social hooks](docs/promo/current-cli-social-hooks.md) gives
+  short promotion beats that name the current placeholder limitations.
 
 ## Verify
 
