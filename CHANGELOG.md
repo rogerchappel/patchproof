@@ -15,6 +15,8 @@ format and uses semantic versioning when versioned releases are published.
 ### Fixed
 
 - README checkout commands now point at the actual built CLI path.
+- GitHub releases now reject mismatched tags, require one package artifact,
+  and safely repair release notes and assets when a workflow is rerun.
 
 ## Release Links
 
