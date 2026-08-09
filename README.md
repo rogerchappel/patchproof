@@ -71,6 +71,20 @@ npm run release:check
 `release:check` is the CI and release-dry-run gate. It rebuilds the TypeScript
 output, runs the CLI smoke, and checks that the package tarball contains the
 CLI, library entrypoint, and example proof artifact.
+
+## Maintainer release recovery
+
+This package is distributed only as a GitHub release tarball; the release
+workflow does not publish to npm. For a first release, update `package.json`
+and `package-lock.json` together, merge the verified change, then push the
+exact matching tag (for example, package version `0.1.0` requires tag
+`v0.1.0`). Malformed or mismatched tags stop before a tarball is created.
+
+If a release run fails after GitHub created the release, fix the workflow or
+rerun the failed job for the same tag. The rerun updates the generated notes
+and replaces the existing tarball, so maintainers should not delete the
+release or move the tag. Before rerunning, confirm that the tag still points to
+the intended commit and that its `package.json` version still matches.
 ## CLI Help Smoke
 
 Confirm the packaged command starts and prints its help text before relying on a release tarball or downstream automation:
