@@ -39,6 +39,14 @@ jobs:
         run: node /tmp/releasebox/bin/releasebox.js check .
       - name: Run release checks
         run: npm run release:check
+      - name: Exercise release guards
+        run: |
+          npm run test:release
+          release_tag="v$(node -p "require('./package.json').version")"
+          node scripts/github-release.mjs validate-tag "$release_tag"
+          mkdir release-artifacts
+          npm pack --pack-destination release-artifacts
+          node scripts/github-release.mjs artifact release-artifacts
       - name: Release notes preview
         run: |
           node /tmp/releasebox/bin/releasebox.js notes . > release-notes-preview.md
