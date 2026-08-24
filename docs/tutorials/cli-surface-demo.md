@@ -1,7 +1,7 @@
 # CLI Surface Demo
 
 This demo verifies the public `patchproof` command surface while the proof
-bundle workflow is still in its v0.1.0 placeholder phase.
+bundle workflow is unavailable in v0.1.0.
 
 ## Run it
 
@@ -15,16 +15,16 @@ The script builds the CLI and writes command receipts under
 
 - `version.txt`
 - `help.txt`
-- `init.txt`
-- `run.txt`
-- `render.txt`
+- `init.err`, `run.err`, and `render.err`
+- matching `.status` files containing exit status `2`
 - `run-without-flag.err`
 
 ## What it proves
 
-- The built CLI can be executed from `dist/src/cli.js`.
+- The built CLI can be executed from `dist/cli.js`.
 - The version command reports `0.1.0`.
-- `init`, `run --run`, and `render` are wired as explicit placeholders.
+- `init`, `run --run`, and `render` fail with status `2` and actionable stderr,
+  preventing automation from accepting a no-op as proof.
 - `run` without `--run` exits with status `2`, keeping experimental receipt
   capture opt-in.
 

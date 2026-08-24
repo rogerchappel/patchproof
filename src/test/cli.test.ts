@@ -31,14 +31,21 @@ test('rejects unknown commands with a non-zero exit', async () => {
   );
 });
 
-test('documented placeholder commands exit successfully', async () => {
-  const init = await execFileAsync(process.execPath, ['dist/cli.js', 'init']);
-  const run = await execFileAsync(process.execPath, ['dist/cli.js', 'run', '--run']);
-  const render = await execFileAsync(process.execPath, ['dist/cli.js', 'render']);
-
-  assert.match(init.stdout, /proof bundle scaffolding is not implemented yet/);
-  assert.match(run.stdout, /command receipt capture is not implemented yet/);
-  assert.match(render.stdout, /proof bundle rendering is not implemented yet/);
+test('unavailable workflow commands fail with actionable errors', async () => {
+  for (const [args, capability] of [
+    [['init'], 'proof bundle scaffolding'],
+    [['run', '--run'], 'command receipt capture'],
+    [['render'], 'proof bundle rendering'],
+  ] as const) {
+    await assert.rejects(execFileAsync(process.execPath, ['dist/cli.js', ...args]), (error: unknown) => {
+      const failure = error as { code?: number; stdout?: string; stderr?: string };
+      assert.equal(failure.code, 2);
+      assert.equal(failure.stdout, '');
+      assert.match(failure.stderr ?? '', new RegExp(`unavailable: ${capability} is not implemented`));
+      assert.match(failure.stderr ?? '', /Do not use this command in proof automation/);
+      return true;
+    });
+  }
 });
 
 test('run command requires explicit experimental acknowledgement', async () => {
