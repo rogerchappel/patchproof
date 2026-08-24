@@ -2,6 +2,13 @@
 import { VERSION } from './index.js';
 
 const command = process.argv[2] ?? 'help';
+const unavailable = (name: string, capability: string): void => {
+  console.error(
+    `patchproof ${name} is unavailable: ${capability} is not implemented. ` +
+      'Do not use this command in proof automation; check --help or the README for the current CLI status.',
+  );
+  process.exitCode = 2;
+};
 
 if (command === '--version' || command === '-v') {
   console.log(VERSION);
@@ -14,16 +21,16 @@ Usage:
   patchproof render
 `);
 } else if (command === 'init') {
-  console.log('patchproof init: proof bundle scaffolding is not implemented yet.');
+  unavailable('init', 'proof bundle scaffolding');
 } else if (command === 'run') {
   if (!process.argv.includes('--run')) {
     console.error('patchproof run requires --run while the command is experimental.');
     process.exitCode = 2;
   } else {
-    console.log('patchproof run: command receipt capture is not implemented yet.');
+    unavailable('run --run', 'command receipt capture');
   }
 } else if (command === 'render') {
-  console.log('patchproof render: proof bundle rendering is not implemented yet.');
+  unavailable('render', 'proof bundle rendering');
 } else {
   console.error(`Unknown command: ${command}`);
   process.exitCode = 1;
