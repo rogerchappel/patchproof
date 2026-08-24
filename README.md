@@ -4,7 +4,8 @@ Local proof bundles for patches, command receipts, and reviewer handoffs.
 
 ## Status
 
-This is an early v0.1.0 CLI surface for initializing, running, and rendering patch proof bundles.
+This is an early v0.1.0 CLI surface. Proof bundle initialization, command
+capture, and rendering are not implemented yet.
 
 ## Install from a checkout
 
@@ -17,7 +18,8 @@ npm run build
 
 ## Use
 
-Create the local proof structure, run the configured proof command, then render the result:
+The planned workflow commands are visible in help, but currently fail with
+status `2` and an actionable error so scripts cannot mistake a no-op for proof:
 
 ```sh
 node dist/cli.js init
@@ -31,8 +33,8 @@ Check the installed CLI version:
 node dist/cli.js --version
 ```
 
-`patchproof run` requires `--run` while command receipt capture is experimental.
-This makes the placeholder command explicit in scripts and release smokes.
+Do not use these commands in proof automation until their implementations land.
+`patchproof run` also requires `--run`; omitting it fails with status `2`.
 
 ## Runnable Demo
 
@@ -42,8 +44,8 @@ Capture the current CLI surface as local command receipts:
 bash demo/cli-surface-smoke.sh
 ```
 
-The script writes version, help, placeholder command output, and the guarded
-`run` failure output to `${TMPDIR:-/tmp}/patchproof-cli-surface`. See
+The script writes version, help, and unavailable-command errors (including
+their verified failure statuses) to `${TMPDIR:-/tmp}/patchproof-cli-surface`. See
 [docs/tutorials/cli-surface-demo.md](docs/tutorials/cli-surface-demo.md) for the
 walkthrough.
 
@@ -99,7 +101,7 @@ The command should exit successfully, print the available options, and avoid rea
 ## Limitations
 
 - Proof bundles are local artifacts and should be reviewed before sharing.
-- The current CLI is intentionally small; expand examples as new commands land.
+- Proof workflow commands intentionally fail until they perform their advertised work.
 
 ## Contributing
 

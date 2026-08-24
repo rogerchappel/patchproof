@@ -13,8 +13,8 @@ npm run build
 ## Inspect
 
 ```sh
-node dist/src/cli.js --help
-node dist/src/cli.js --version
+node dist/cli.js --help
+node dist/cli.js --version
 ```
 
 The help output should show:
@@ -25,17 +25,20 @@ patchproof run --run
 patchproof render
 ```
 
-## Exercise placeholders
+## Verify unavailable workflow commands
 
 ```sh
-node dist/src/cli.js init
-node dist/src/cli.js run --run
-node dist/src/cli.js render
+for command in "init" "run --run" "render"; do
+  if node dist/cli.js $command; then
+    echo "unexpected success: $command"
+    exit 1
+  fi
+done
 ```
 
-These commands are intentionally wired as explicit placeholders in v0.1.0. They
-let package smoke tests verify the CLI entrypoint while keeping future proof
-bundle behavior out of scope until it is implemented.
+Each command exits with status `2` and explains on stderr that the capability
+is unavailable. This prevents a package or downstream script from treating an
+unimplemented no-op as a successful proof workflow.
 
 ## Guard the experimental run command
 
@@ -47,4 +50,3 @@ fi
 ```
 
 `patchproof run` requires `--run` during this experimental phase.
-
