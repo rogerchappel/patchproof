@@ -34,7 +34,8 @@
     "smoke": "bash scripts/smoke.sh",
     "prepack": "npm run build",
     "package:smoke": "node scripts/package-smoke.mjs",
-    "release:check": "npm test && npm run test:release-workflow && npm run check && npm run build && npm run smoke && npm run package:smoke"
+    "release:check": "npm test && npm run test:release-workflow && npm run check && npm run build && npm run docs:executables && npm run smoke && npm run package:smoke",
+    "docs:executables": "node scripts/check-executable-docs.mjs"
   },
   "keywords": [
     "git",
