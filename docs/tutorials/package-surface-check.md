@@ -43,7 +43,7 @@ unimplemented no-op as a successful proof workflow.
 ## Guard the experimental run command
 
 ```sh
-if node dist/src/cli.js run; then
+if node dist/cli.js run; then
   echo "unexpected success"
   exit 1
 fi

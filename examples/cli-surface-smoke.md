@@ -7,11 +7,11 @@ for demos, release checks, and package verification.
 ```sh
 npm install
 npm run build
-node dist/src/cli.js --version
-node dist/src/cli.js --help
-node dist/src/cli.js init
-node dist/src/cli.js run --run
-node dist/src/cli.js render
+node dist/cli.js --version
+node dist/cli.js --help
+node dist/cli.js init
+node dist/cli.js run --run
+node dist/cli.js render
 ```
 
 Expected messages:
