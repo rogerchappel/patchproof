@@ -87,6 +87,11 @@ rerun the failed job for the same tag. The rerun updates the generated notes
 and replaces the existing tarball, so maintainers should not delete the
 release or move the tag. Before rerunning, confirm that the tag still points to
 the intended commit and that its `package.json` version still matches.
+
+The publish helper creates a release only when `gh release view` explicitly
+reports that the release was not found. Authentication, network, server, and
+other inspection failures stop the workflow and print the original GitHub CLI
+diagnostic; resolve that failure before rerunning the same tag.
 ## CLI Help Smoke
 
 Confirm the packaged command starts and prints its help text before relying on a release tarball or downstream automation:
