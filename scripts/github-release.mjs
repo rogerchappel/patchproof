@@ -30,11 +30,23 @@ export function findSingleTarball(directory) {
   return resolve(directory, tarballs[0]);
 }
 
+function errorOutput(error) {
+  const stderr = error && "stderr" in Object(error) ? error.stderr : undefined;
+  if (Buffer.isBuffer(stderr)) return stderr.toString("utf8");
+  if (typeof stderr === "string") return stderr;
+  return error instanceof Error ? error.message : String(error);
+}
+
+export function isReleaseNotFound(error) {
+  return /(?:^|\n)(?:release not found|HTTP 404(?::[^\n]*)?)(?:\n|$)/i.test(errorOutput(error).trim());
+}
+
 export function publishGitHubRelease({ tag, notesFile, artifact, run }) {
   let exists = true;
   try {
     run(["release", "view", tag]);
-  } catch {
+  } catch (error) {
+    if (!isReleaseNotFound(error)) throw error;
     exists = false;
   }
 
@@ -47,6 +59,10 @@ export function publishGitHubRelease({ tag, notesFile, artifact, run }) {
 }
 
 function runGh(args) {
+  if (args[0] === "release" && args[1] === "view") {
+    execFileSync("gh", args, { encoding: "utf8", stdio: ["inherit", "ignore", "pipe"] });
+    return;
+  }
   execFileSync("gh", args, { stdio: "inherit" });
 }
 
@@ -92,7 +108,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
   try {
     main(process.argv.slice(2));
   } catch (error) {
-    console.error(error.message);
+    console.error(errorOutput(error).trim());
     process.exit(1);
   }
 }
