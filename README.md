@@ -34,7 +34,9 @@ node dist/cli.js --version
 ```
 
 Do not use these commands in proof automation until their implementations land.
-`patchproof run` also requires `--run`; omitting it fails with status `2`.
+`patchproof run` also requires exactly one `--run` argument; omitting it fails
+with status `2`, while unexpected operands or options fail with status `1`.
+The version, help, init, and render commands do not accept additional arguments.
 
 ## Runnable Demo
 
