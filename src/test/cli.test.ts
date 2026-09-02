@@ -58,3 +58,38 @@ test('run command requires explicit experimental acknowledgement', async () => {
     },
   );
 });
+
+test('rejects unexpected arguments for version, help, init, and render', async () => {
+  for (const args of [
+    ['--version', 'extra'],
+    ['--help', 'extra'],
+    ['init', '--unexpected'],
+    ['render', 'output.json'],
+  ]) {
+    await assert.rejects(execFileAsync(process.execPath, ['dist/cli.js', ...args]), (error: unknown) => {
+      const failure = error as { code?: number; stdout?: string; stderr?: string };
+      assert.equal(failure.code, 1);
+      assert.equal(failure.stdout, '');
+      assert.match(failure.stderr ?? '', /does not accept/);
+      assert.match(failure.stderr ?? '', /Usage: patchproof/);
+      return true;
+    });
+  }
+});
+
+test('run accepts only the documented acknowledgement argument', async () => {
+  for (const args of [
+    ['run', 'junk', '--run'],
+    ['run', '--run', 'junk'],
+    ['run', '--run', '--run'],
+    ['run', '--unexpected'],
+  ]) {
+    await assert.rejects(execFileAsync(process.execPath, ['dist/cli.js', ...args]), (error: unknown) => {
+      const failure = error as { code?: number; stderr?: string };
+      assert.equal(failure.code, 1);
+      assert.match(failure.stderr ?? '', /Usage: patchproof run --run/);
+      assert.doesNotMatch(failure.stderr ?? '', /unavailable/);
+      return true;
+    });
+  }
+});
