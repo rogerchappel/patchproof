@@ -1,7 +1,16 @@
 #!/usr/bin/env node
 import { VERSION } from './index.js';
 
-const command = process.argv[2] ?? 'help';
+const [command = 'help', ...args] = process.argv.slice(2);
+const rejectArguments = (name: string, expected: string, received: string[]): boolean => {
+  if (received.length === 0) return false;
+  console.error(
+    `patchproof ${name} does not accept ${received.map((argument) => JSON.stringify(argument)).join(', ')}. ` +
+      `Usage: ${expected}`,
+  );
+  process.exitCode = 1;
+  return true;
+};
 const unavailable = (name: string, capability: string): void => {
   console.error(
     `patchproof ${name} is unavailable: ${capability} is not implemented. ` +
@@ -11,9 +20,9 @@ const unavailable = (name: string, capability: string): void => {
 };
 
 if (command === '--version' || command === '-v') {
-  console.log(VERSION);
+  if (!rejectArguments(command, 'patchproof --version', args)) console.log(VERSION);
 } else if (command === 'help' || command === '--help' || command === '-h') {
-  console.log(`patchproof ${VERSION}
+  if (!rejectArguments(command, 'patchproof --help', args)) console.log(`patchproof ${VERSION}
 
 Usage:
   patchproof init
@@ -21,16 +30,18 @@ Usage:
   patchproof render
 `);
 } else if (command === 'init') {
-  unavailable('init', 'proof bundle scaffolding');
+  if (!rejectArguments('init', 'patchproof init', args)) unavailable('init', 'proof bundle scaffolding');
 } else if (command === 'run') {
-  if (!process.argv.includes('--run')) {
+  if (args.length === 0) {
     console.error('patchproof run requires --run while the command is experimental.');
     process.exitCode = 2;
-  } else {
+  } else if (args.length === 1 && args[0] === '--run') {
     unavailable('run --run', 'command receipt capture');
+  } else {
+    rejectArguments('run', 'patchproof run --run', args);
   }
 } else if (command === 'render') {
-  unavailable('render', 'proof bundle rendering');
+  if (!rejectArguments('render', 'patchproof render', args)) unavailable('render', 'proof bundle rendering');
 } else {
   console.error(`Unknown command: ${command}`);
   process.exitCode = 1;
