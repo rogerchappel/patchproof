@@ -1,7 +1,17 @@
 #!/usr/bin/env node
 
 import { execFileSync } from "node:child_process";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 
 const packageJson = JSON.parse(readFileSync("package.json", "utf8"));
 const staleArtifact = "dist/stale-runtime.js";
@@ -15,11 +25,20 @@ if (existsSync(staleArtifact)) {
   process.exit(1);
 }
 
-const output = execFileSync("npm", ["pack", "--dry-run", "--json"], {
-  encoding: "utf8",
-  stdio: ["ignore", "pipe", "inherit"],
-});
-const [packument] = JSON.parse(output);
+const workspace = mkdtempSync(join(tmpdir(), "patchproof-package-smoke-"));
+const output = execFileSync(
+  "npm",
+  ["pack", "--json", "--pack-destination", workspace],
+  { encoding: "utf8", stdio: ["ignore", "pipe", "inherit"] },
+);
+const packuments = JSON.parse(output);
+
+if (packuments.length !== 1) {
+  console.error(`npm pack produced ${packuments.length} artifacts instead of one.`);
+  process.exit(1);
+}
+
+const [packument] = packuments;
 const packedFiles = new Set(packument.files.map((file) => file.path));
 
 const requiredFiles = [
@@ -58,6 +77,44 @@ if (missing.length > 0 || forbidden.length > 0 || unexpectedDistFiles.length > 0
     for (const file of unexpectedDistFiles) console.error(`- ${file}`);
   }
   process.exit(1);
+}
+
+if (packageJson.name === "patchproof" || packageJson.name !== "@rogerchappel/patchproof") {
+  console.error(`Unexpected package identity: ${packageJson.name}.`);
+  process.exit(1);
+}
+
+if (
+  packageJson.bin?.patchproof !== "./dist/cli.js" ||
+  packageJson.main !== "./dist/index.js" ||
+  packageJson.exports?.["."] !== "./dist/index.js"
+) {
+  console.error("The packed manifest lost the patchproof CLI or public entrypoint.");
+  process.exit(1);
+}
+
+const artifacts = readdirSync(workspace).filter((file) => file.endsWith(".tgz"));
+if (artifacts.length !== 1) {
+  console.error(`Found ${artifacts.length} installable artifacts instead of one.`);
+  process.exit(1);
+}
+
+const prefix = join(workspace, "consumer");
+try {
+  execFileSync(
+    "npm",
+    ["install", "--ignore-scripts", "--no-audit", "--no-fund", "--prefix", prefix, join(workspace, artifacts[0])],
+    { stdio: "inherit" },
+  );
+  const binary = join(prefix, "node_modules", ".bin", "patchproof");
+  const version = execFileSync(binary, ["--version"], { encoding: "utf8" }).trim();
+  const help = execFileSync(binary, ["--help"], { encoding: "utf8" });
+  if (version !== packageJson.version || !help.includes("Usage:\n  patchproof init")) {
+    console.error("The installed patchproof binary failed its version/help contract.");
+    process.exit(1);
+  }
+} finally {
+  rmSync(workspace, { recursive: true, force: true });
 }
 
 console.log(
