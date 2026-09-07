@@ -74,12 +74,29 @@ npm run release:check
 
 `release:check` is the CI and release-dry-run gate. It rebuilds the TypeScript
 output, runs the CLI smoke, and checks that the package tarball contains the
-CLI, library entrypoint, and example proof artifact.
+CLI, library entrypoint, and example proof artifact. The package smoke also
+installs the single generated tarball into a clean prefix and exercises
+`patchproof --version` and `patchproof --help` through the installed bin link.
+
+## Install a GitHub release
+
+Install the tarball attached to the matching GitHub release, substituting the
+version you need:
+
+```sh
+npm install https://github.com/rogerchappel/patchproof/releases/download/v0.1.0/rogerchappel-patchproof-0.1.0.tgz
+npx patchproof --help
+```
+
+The artifact's package identity is `@rogerchappel/patchproof`, while its CLI
+command remains `patchproof`. The unscoped npm package named `patchproof`
+belongs to a different project and must not be used as this repository's
+artifact.
 
 ## Maintainer release recovery
 
 This package is distributed only as a GitHub release tarball; the release
-workflow does not publish to npm. For a first release, update `package.json`
+workflow does not publish to the npm registry. For a first release, update `package.json`
 and `package-lock.json` together, merge the verified change, then push the
 exact matching tag (for example, package version `0.1.0` requires tag
 `v0.1.0`). Malformed or mismatched tags stop before a tarball is created.
