@@ -1,5 +1,5 @@
 {
-  "name": "patchproof",
+  "name": "@rogerchappel/patchproof",
   "version": "0.1.0",
   "description": "Local proof bundles for patches, command receipts, and reviewer handoffs.",
   "type": "module",
